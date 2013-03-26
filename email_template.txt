@@ -1,0 +1,6 @@
+Hi __RECIPIENT__,
+
+	You work for __COMPANY__. Sent using gmail.py.
+
+Best,
+__SENDER_NAME__
