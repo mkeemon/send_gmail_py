@@ -1,15 +1,5 @@
-import smtplib 
-
-
-#information to edit
-username = 'gmail_username' #do not add @gmail.com!
-password = 'gmail_password'
-sender_name = 'Your Name'
-
-csv_fname = 'emails.csv'
-template_fname = 'email_template.txt'
-email_subject = 'Email Subject'
-
+import smtplib
+from config import config
 
 
 def main():
@@ -17,7 +7,7 @@ def main():
 
     server = connect()
 
-    contacts = get_csv_contents(csv_fname)
+    contacts = get_csv_contents(config['csv_fname'])
     contacts.pop(0) #get rid of headings row
 
     for c in contacts:
@@ -30,24 +20,24 @@ def main():
 def connect():
     server = smtplib.SMTP('smtp.gmail.com:587')
     server.starttls()
-    server.login(username,password)
+    server.login(config['username'],config['password'])
     return server
 
 def get_email(contact):
     #contact format:
     #contact = [company, name, email]
 
-    sender = username+'@gmail.com'
+    sender = config['username']+'@gmail.com'
 
     company = contact[0]
     recip_name = contact[1]
     recipient = contact[2]
 
-    msg = get_email_msg(recip_name, sender_name, company)
+    msg = get_email_msg(recip_name, config['sender_name'], company)
 
 
     headers = ["From: "     + sender,
-               "Subject: "  + email_subject,
+               "Subject: "  + config['email_subject'],
                "To: "       + recipient]
 
     headers = "\r\n".join(headers)
@@ -67,7 +57,7 @@ def get_csv_contents(fname):
 
 
 def get_email_msg(recipient, sender, company):
-    file = open(template_fname, 'r')
+    file = open(config['template_fname'], 'r')
     msg = file.read()
     file.close()
 
